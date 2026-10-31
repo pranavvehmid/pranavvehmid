@@ -74,11 +74,11 @@ const goal = `
 const ball = `<g class="ball"><g class="spin"><rect x="0" y="4" width="20" height="12" fill="#fff"/><rect x="4" y="0" width="12" height="20" fill="#fff"/><rect x="8" y="8" width="4" height="4" fill="#111"/></g></g>`;
 
 const goalText = "GOAL!";
-const gCell = 12, gx = (W - textW(goalText, gCell)) / 2;
-const goalSvg = `<g class="goaltxt" fill="${NEON.gold}">${[...goalText].map((ch, i) => glyph(ch, gx + i * 6 * gCell, 150, gCell)).join("")}</g>`;
+const gCell = 16, gx = (W - textW(goalText, gCell)) / 2;
+const goalSvg = `<g class="goaltxt" fill="${NEON.gold}">${[...goalText].map((ch, i) => glyph(ch, gx + i * 6 * gCell, 110, gCell)).join("")}</g>`;
 const chant = (cfg.chant || "GLORY GLORY MAN UNITED").toUpperCase();
-const cCell = 6, cx = (W - textW(chant, cCell)) / 2;
-const chantSvg = `<g class="chant" fill="${NEON.red}">${[...chant].map((ch, i) => glyph(ch, cx + i * 6 * cCell, 230, cCell)).join("")}</g>`;
+const cCell = 8, cx = (W - textW(chant, cCell)) / 2;
+const chantSvg = `<g class="chant" fill="${NEON.red}">${[...chant].map((ch, i) => glyph(ch, cx + i * 6 * cCell, 186, cCell)).join("")}</g>`;
 const stars = Array.from({ length: 34 }, (_, i) => `<rect x="${(i * 149) % W}" y="${(i * 83) % H}" width="3" height="3" fill="#fff" class="tw" style="animation-delay:${(i % 6) * .45}s"/>`).join("");
 const confetti = Array.from({ length: 26 }, (_, i) => {
   const c = [NEON.red, NEON.gold, NEON.cyan, NEON.pink, NEON.lime, "#fff"][i % 6];
@@ -93,25 +93,26 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" wid
   <style>
     .name { fill: ${NEON.cyan}; filter: url(#glow); }
     .drop { animation: drop ${T}s cubic-bezier(.2,1.4,.4,1) infinite; animation-delay: calc(var(--d) * .12s); }
-    @keyframes drop { 0% { transform: translateY(-260px); opacity: 0 } 8% { transform: translateY(0); opacity: 1 } 92% { opacity: 1 } 100% { opacity: 0 } }
+    @keyframes drop { 0% { transform: translateY(-260px); opacity: 0 } 8% { transform: translateY(0); opacity: 1 } 54% { opacity: 1 } 58%,100% { opacity: 0; transform: translateY(0) } }
     .aka { animation: aka ${T}s ease infinite; }
-    @keyframes aka { 0%,12% { opacity: 0 } 18%,92% { opacity: 1 } 100% { opacity: 0 } }
-    .devil { animation: run ${T}s linear infinite; }
+    @keyframes aka { 0%,12% { opacity: 0 } 18%,54% { opacity: 1 } 58%,100% { opacity: 0 } }
+    .devil { animation: run ${T}s linear infinite, fade ${T}s linear infinite; } .goal { animation: fade ${T}s linear infinite; }
+    @keyframes fade { 0%,64% { opacity: 1 } 70%,96% { opacity: 0 } 100% { opacity: 1 } }
     @keyframes run { 0%,22% { transform: translate(-160px, 244px) } 46% { transform: translate(560px, 244px) } 50% { transform: translate(560px, 234px) } 54%,100% { transform: translate(560px, 244px) } }
     .legA { animation: legA .3s steps(1) infinite; } .legB { animation: legB .3s steps(1) infinite; }
     @keyframes legA { 0% { opacity: 1 } 50% { opacity: 0 } } @keyframes legB { 0% { opacity: 0 } 50% { opacity: 1 } }
     .ball { animation: ball ${T}s cubic-bezier(.3,.6,.4,1) infinite; }
-    @keyframes ball { 0%,46% { transform: translate(676px, 336px) } 58% { transform: translate(890px, 276px) } 64%,100% { transform: translate(900px, 330px) } }
+    @keyframes ball { 0%,46% { transform: translate(676px, 336px); opacity: 1 } 58% { transform: translate(890px, 276px) } 64% { transform: translate(900px, 330px); opacity: 1 } 70%,99% { transform: translate(900px, 330px); opacity: 0 } 100% { transform: translate(676px, 336px); opacity: 0 } }
     .spin { animation: spin .6s linear infinite; transform-box: fill-box; transform-origin: center; }
     @keyframes spin { to { transform: rotate(360deg) } }
     .net { animation: net ${T}s ease infinite; transform-box: fill-box; transform-origin: center; }
     @keyframes net { 0%,57% { transform: scale(1) } 60% { transform: scale(1.08, 1.04) } 63%,100% { transform: scale(1) } }
     .goaltxt { filter: url(#glow); animation: goal ${T}s ease infinite; transform-box: fill-box; transform-origin: center; }
-    @keyframes goal { 0%,57% { opacity: 0; transform: scale(.3) } 61% { opacity: 1; transform: scale(1.15) } 64%,74% { opacity: 1; transform: scale(1) } 70% { opacity: .5 } 78%,100% { opacity: 0; transform: scale(1) } }
+    @keyframes goal { 0%,57% { opacity: 0; transform: scale(.3) } 61% { opacity: 1; transform: scale(1.15) } 64%,70% { opacity: 1; transform: scale(1) } 67% { opacity: .55 } 73%,100% { opacity: 0; transform: scale(1) } }
     .conf { animation: conf ${T}s linear infinite; }
     @keyframes conf { 0%,58% { transform: translate(0, 0); opacity: 0 } 60% { opacity: 1 } 80% { transform: translate(var(--dx), 380px) rotate(200deg); opacity: 1 } 81%,100% { opacity: 0 } }
     .chant { filter: url(#glow); animation: chant ${T}s ease infinite; }
-    @keyframes chant { 0%,70% { opacity: 0; transform: translateY(14px) } 76% { opacity: 1; transform: translateY(0) } 80% { opacity: .6 } 84%,94% { opacity: 1 } 100% { opacity: 0 } }
+    @keyframes chant { 0%,73% { opacity: 0; transform: translateY(14px) } 78% { opacity: 1; transform: translateY(0) } 82% { opacity: .6 } 86%,95% { opacity: 1 } 99%,100% { opacity: 0 } }
     .tw { animation: tw 2.6s steps(2) infinite; } @keyframes tw { 50% { opacity: .08 } }
     .frame { animation: frame ${T}s ease infinite; } @keyframes frame { 0%,58% { stroke: ${NEON.pink} } 61%,80% { stroke: ${NEON.gold} } 100% { stroke: ${NEON.pink} } }
   </style>
