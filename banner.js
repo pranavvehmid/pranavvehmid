@@ -79,16 +79,18 @@ const stripes = Array.from({ length: 24 }, (_, i) => `<rect x="${i * 80 - 80}" y
 const net = `<g class="net" stroke="#fff" stroke-opacity=".28" stroke-width="2">${Array.from({ length: 8 }, (_, i) => `<line x1="${GOAL_X + 14 + i * 16}" y1="${BAR_Y + 8}" x2="${GOAL_X + 26 + i * 16}" y2="${GROUND}"/>`).join("")}${Array.from({ length: 8 }, (_, i) => `<line x1="${GOAL_X + 8}" y1="${BAR_Y + 22 + i * 18}" x2="${GOAL_X + 140}" y2="${BAR_Y + 26 + i * 18}"/>`).join("")}</g>`;
 const goalFrame = `<g><rect x="${GOAL_X}" y="${BAR_Y}" width="150" height="8" fill="#fff"/><rect x="${GOAL_X}" y="${BAR_Y}" width="8" height="${GROUND - BAR_Y}" fill="#fff"/><rect x="${GOAL_X + 142}" y="${BAR_Y}" width="8" height="${GROUND - BAR_Y}" fill="#ddd"/>${net}</g>`;
 
-const goalWord = "GOAL!";
-const gS = 22, gX = (W - tw(goalWord, gS)) / 2, gY = 50;
+const goalWord = (cfg.goalWord || "MERGED!").toUpperCase();
+const gS = 20, gX = (W - tw(goalWord, gS)) / 2, gY = 50;
 const goalText = [...goalWord].map((ch, i) => `<g class="gl" style="--i:${i}" fill="${C.gold}">${glyph(ch, gX + i * 6 * gS, gY, gS)}</g>`).join("");
 
 const name = (cfg.name || "PRANAV").toUpperCase();
 const nS = 16, nX = 90, nY = 70;
 const nameText = [...name].map((ch, i) => `<g class="nl" style="--i:${i}">${glyph(ch, nX + i * 6 * nS, nY, nS)}</g>`).join("");
 const chant = (cfg.chant || "GLORY GLORY MAN UNITED").toUpperCase();
-const cS = 6, cX = nX, cY = nY + 7 * nS + 34;
+const cS = 10, cX = nX, cY = nY + 7 * nS + 34;
 const chantText = [...chant].map((ch, i) => `<g class="cl" style="--i:${i}">${glyph(ch, cX + i * 6 * cS, cY, cS)}</g>`).join("");
+// tagline after the chant
+
 const underline = `<rect class="ul" x="${nX}" y="${nY + 7 * nS + 12}" width="${tw(name, nS)}" height="8" fill="${C.red}"/>`;
 
 const confetti = Array.from({ length: 40 }, (_, i) => {
@@ -96,7 +98,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => {
   return `<rect x="${(i * 29) % W}" y="-16" width="${6 + (i % 3) * 3}" height="${6 + (i % 2) * 4}" fill="${col}" class="cf" style="--dx:${((i * 47) % 160) - 80}px;--rot:${(i * 67) % 720 - 360}deg;animation-delay:${(i % 10) * .05}s"/>`;
 }).join("");
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${name}: a Red Devil dribbles in and scores top corner. GOAL! Glory Glory Man United.">
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${name}: a Red Devil dribbles in and scores top corner. ${goalWord} ${chant}.">
 <defs>
   <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05040C"/><stop offset=".55" stop-color="#140820"/><stop offset="1" stop-color="#2A0611"/></linearGradient>
   <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".7" stop-color="#fff" stop-opacity="0"/></linearGradient>
